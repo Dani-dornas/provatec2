@@ -1,35 +1,25 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const AutorSchema = new Schema({
+const MilitarSchema = new Schema({
     nome: { type: String, maxlength: [50, "O nome pode ter no máximo 50 caracteres"], required: true },
-    cpf: {
-        type: String,
-        maxlenght: 11,
-        minLenght: 11,
+    idade: {
+        type: Number,
+        maxlenght:  [3, "A idade pode ter no máximo 3 caracteres"],
         required: true,
         unique: true,
         validate: {
-            validator: function (value: string) {
-                if (typeof value !== 'string') {
+            validator: function (value: number) {
+                if (typeof value !== 'number') {
                     return false;
-                }
-                value = value.replace(/[^\d]+/g, '');
-                if (value.length !== 11 || !!value.match(/(\d)\1{10}/)) {
-                    return false;
-                }
-                const values = value.split('').map(el => +el);
-                const rest = (count: number) => (values.slice(0, count - 12).reduce((soma, el, index) => (soma + el * (count - index)), 0) * 10) % 11 % 10;
-                return rest(10) === values[9] && rest(11) === values[10];
-            },
+                }},
             message: (props: any) =>
-                `${props.value} não é um CPF válido!`,
+                `${props.value} não é uma idade válida!`,
         },
     },
-    data_nasc: { type: Date },
     email: {
         type: String,
-        maxlength: [60, "O e-mail pode ter no máximo 60 caracteres"],
+        maxlength: [100, "O e-mail pode ter no máximo 60 caracteres"],
         unique: true,
         required: [true, "O e-mail é obrigatório"],
         validate: {
@@ -42,6 +32,24 @@ const AutorSchema = new Schema({
                 `${props.value} não é um formato de e-mail válido`,
         },
     },
+    fone: {
+        type: String,
+        maxlength: [11, "O telefone pode ter no máximo 11 caracteres"],
+        unique: true,
+        required: [true, "O e-mail é obrigatório"],
+        validate: {
+            validator: function (value: string) {
+                if (typeof value !== 'string') {
+                    return false;
+                }
+                value = value.replace(/[^\d]+/g, '');
+                if (value.length !== 11 || !!value.match(/^(\d{5})(\d{4})$/)) {
+                    return false;
+                }},
+            message: (props: any) =>
+                `${props.value} não é um telefone válido válido! Escreva no formato (XX) XXXXX-XXXX`,
+        },
+    }
 }, { timestamps: true },
 );
 
