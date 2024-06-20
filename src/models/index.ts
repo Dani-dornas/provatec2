@@ -13,7 +13,9 @@ const MilitarSchema = new Schema({
         unique: true,
         validate: {
             validator: function (value: number) {
-                if (typeof value !== 'number' && value < 18) {
+                if (typeof value !== 'number') {
+                    return false;
+                } if (value < 18) {
                     return false;
                 }
             },
@@ -64,7 +66,7 @@ const MilitarSchema = new Schema({
                 }
             },
             message: (props: any) =>
-                `${props.value} não é um telefone válido válido! Escreva no formato (XX) XXXXX-XXXX`,
+                `${props.value} não é um telefone válido válido!`,
         },
     }
 }, { timestamps: true },
@@ -75,7 +77,10 @@ const SoldadoSchema = new Schema({
         type: Number, required: true,
         validate: {
             validator: function (value: number) {
-                if (typeof value !== 'number' && value <= 20) {
+                if (typeof value !== 'number') {
+                    return false
+                }
+                if (value <= 20) {
                     return false
                 }
             }
@@ -109,7 +114,13 @@ const PatenteSchema = new Schema({
         unique: true,
         validate: {
             validator: function (value: number) {
-                if (typeof value !== 'number' && value <= 20 && value > 0) {
+                if (typeof value !== 'number') {
+                    return false
+                }
+                if (value <= 20) {
+                    return false
+                }
+                if (value > 0) {
                     return false
                 }
             }

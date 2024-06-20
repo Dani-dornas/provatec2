@@ -1,12 +1,12 @@
 import { Router, Request, Response } from "express";
-import autor from './Militar';
-import editora from './Patente';
-import livro from './Soldado';
+import militar from './Militar';
+import patente from './Patente';
+import soldado from './Soldado';
 
 const routes = Router();
-routes.use("/autor", autor);
-routes.use("/editora", editora);
-routes.use("/livro", livro);
+routes.use("/militar", militar);
+routes.use("/patente", patente);
+routes.use("/soldado", soldado);
 
 //aceita qualquer método HTTP ou URL
 routes.use( (_:Request,res:Response) => res.json({error:"Requisição desconhecida"}) );
