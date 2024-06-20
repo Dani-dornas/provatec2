@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
-import { Livro } from "../models";
+import { Soldado } from "../models";
 
-class LivroController {
+class SoldadoController {
 
     // create
 
     public async create(req: Request, res: Response): Promise<Response> {
-        const { editora, titulo, paginas } = req.body;
+        const { militar, altura, cim } = req.body;
         try {
-            const document = new Livro({ editora, titulo, paginas });
+            const document = new Soldado({ militar, altura, cim });
             // ao salvar serão aplicadas as validações do esquema
             const response = await document.save();
             return res.json(response);
         } catch (error: any) {
-            if (error && error.errors["titulo"]) {
-                return res.json({ message: error.errors["titulo"].message });
-            } else if (error && error.errors["paginas"]) {
-                return res.json({ message: error.errors["paginas"].message });
-            } else if (error && error.errors["editora"]) {
-                return res.json({ message: error.errors["editora"].message });
+            if (error && error.errors["altura"]) {
+                return res.json({ message: error.errors["altura"].message });
+            } else if (error && error.errors["cim"]) {
+                return res.json({ message: error.errors["cim"].message });
+            } else if (error && error.errors["militar"]) {
+                return res.json({ message: error.errors["militar"].message });
             }
             return res.json({ message: error });
         }
@@ -28,7 +28,7 @@ class LivroController {
 
     public async list(req: Request, res: Response): Promise<Response> {
         try {
-            const objects = await Livro.find().sort({ titulo: "asc" });
+            const objects = await Soldado.find().sort({ titulo: "asc" });
             return res.json(objects);
         } catch (error: any) {
             return res.json({ message: error.message });
@@ -40,7 +40,7 @@ class LivroController {
     public async delete(req: Request, res: Response): Promise<Response> {
         const { id: _id } = req.body; // _id do registro a ser excluído
         try {
-            const object = await Livro.findByIdAndDelete(_id);
+            const object = await Soldado.findByIdAndDelete(_id);
             if (object) {
                 return res.json({ message: "Registro excluído com sucesso" });
             } else {
@@ -54,30 +54,30 @@ class LivroController {
     // update
 
     public async update(req: Request, res: Response): Promise<Response> {
-        const { id, editora, titulo, paginas } = req.body;
+        const { id, militar, altura, cim } = req.body;
         try {
-            // busca o livro existente na coleção antes de fazer o update
-            const document = await Livro.findById(id);
+            // busca o Soldado existente na coleção antes de fazer o update
+            const document = await Soldado.findById(id);
             if (!document) {
-                return res.json({ message: "Livro inexistente!" });
+                return res.json({ message: "Soldado inexistente!" });
             }
             // atualiza os campos
-            document.editora = editora;
-            document.titulo = titulo;
-            document.paginas = paginas;
+            document.militar = militar;
+            document.altura = altura;
+            document.cim = cim;
             // ao salvar serão aplicadas as validações do esquema
             const response = await document.save();
             return res.json(response);
         } catch (error: any) {
-            if (error && error.errors["titulo"]) {
-                return res.json({ message: error.errors["titulo"].message });
-            } else if (error && error.errors["paginas"]) {
-                return res.json({ message: error.errors["paginas"].message });
-            } else if (error && error.errors["editora"]) {
-                return res.json({ message: error.errors["editora"].message });
+            if (error && error.errors["altura"]) {
+                return res.json({ message: error.errors["altura"].message });
+            } else if (error && error.errors["cim"]) {
+                return res.json({ message: error.errors["cim"].message });
+            } else if (error && error.errors["militar"]) {
+                return res.json({ message: error.errors["militar"].message });
             }
             return res.json({ message: error });
         }
     }
 }
-export default new LivroController();
+export default new SoldadoController();

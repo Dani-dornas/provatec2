@@ -1,30 +1,30 @@
 import { Request, Response } from "express";
-import { Autor } from "../models";
+import { Militar } from "../models";
 
-class AutorController {
+class MilitarController {
 
     // create
 
     public async create(req: Request, res: Response): Promise<Response> {
-        const { nome, cpf, data_nasc, email } = req.body;
+        const { nome, fone, idade, email } = req.body;
         try {
             //a instância de um modelo é chamada de documento
-            const document = new Autor({ nome, cpf, data_nasc, email });
+            const document = new Militar({ nome, fone, idade, email });
             // ao salvar serão aplicadas as validações do esquema
             const resp = await document.save();
             return res.json(resp);
         } catch (error: any) {
             if (error.code === 11000 || error.code === 11001) {
                 // código 11000 e 11001 indica violação de restrição única (índice duplicado)
-                return res.json({ message: "Este e-mail/cpf já está em uso!" });
+                return res.json({ message: "Este e-mail/fone já está em uso!" });
             } else if (error && error.errors["mail"]) {
                 return res.json({ message: error.errors["mail"].message });
             } else if (error && error.errors["nome"]) {
                 return res.json({ message: error.errors["nome"].message });
-            } else if (error && error.errors["cpf"]) {
-                return res.json({ message: error.errors["cpf"].message });
-            }else if (error && error.errors["data_nasc"]) {
-                return res.json({ message: error.errors["data_nasc"].message });
+            } else if (error && error.errors["fone"]) {
+                return res.json({ message: error.errors["fone"].message });
+            }else if (error && error.errors["idade"]) {
+                return res.json({ message: error.errors["idade"].message });
             }
             return res.json({ message: error.message });
         }
@@ -34,7 +34,7 @@ class AutorController {
 
     public async list(_: Request, res: Response): Promise<Response> {
         try {
-            const objects = await Autor.find().sort({ nome: "asc" });
+            const objects = await Militar.find().sort({ nome: "asc" });
             return res.json(objects);
         } catch (error: any) {
             return res.json({ message: error.message });
@@ -46,7 +46,7 @@ class AutorController {
     public async delete(req: Request, res: Response): Promise<Response> {
         const { id: _id } = req.body; // _id do registro a ser excluído
         try {
-            const object = await Autor.findByIdAndDelete(_id);
+            const object = await Militar.findByIdAndDelete(_id);
             if (object) {
                 return res.json({ message: "Registro excluído com sucesso!" });
             } else {
@@ -60,17 +60,17 @@ class AutorController {
     // update
 
     public async update(req: Request, res: Response): Promise<Response> {
-        const { id, nome, cpf, data_nasc, email } = req.body;
+        const { id, nome, fone, idade, email } = req.body;
         try {
-            // busca o autor existente na coleção antes de fazer o update
-            const document = await Autor.findById(id);
+            // busca o Militar existente na coleção antes de fazer o update
+            const document = await Militar.findById(id);
             if (!document) {
-                return res.json({ message: "Autor inexistente!" });
+                return res.json({ message: "Militar inexistente!" });
             }
             // atualiza os campos
             document.nome = nome;
-            document.cpf = cpf;
-            document.data_nasc = data_nasc;
+            document.fone = fone;
+            document.idade = idade;
             document.email = email;
             // ao salvar serão aplicadas as validações do esquema
             const resp = await document.save();
@@ -78,19 +78,19 @@ class AutorController {
         } catch (error: any) {
             if (error.code === 11000 || error.code === 11001) {
                 // código 11000 e 11001 indica violação de restrição única (índice duplicado)
-                return res.json({ message: "Este e-mail/cpf já está em uso!" });
+                return res.json({ message: "Este e-mail/fone já está em uso!" });
             } else if (error && error.errors["mail"]) {
                 return res.json({ message: error.errors["mail"].message });
             } else if (error && error.errors["nome"]) {
                 return res.json({ message: error.errors["nome"].message });
-            } else if (error && error.errors["cpf"]) {
-                return res.json({ message: error.errors["cpf"].message });
-            }else if (error && error.errors["data_nasc"]) {
-                return res.json({ message: error.errors["data_nasc"].message });
+            } else if (error && error.errors["fone"]) {
+                return res.json({ message: error.errors["fone"].message });
+            }else if (error && error.errors["idade"]) {
+                return res.json({ message: error.errors["idade"].message });
             }
             return res.json({ message: error.message });
         }
     }
 }
 
-export default new AutorController();
+export default new MilitarController();
