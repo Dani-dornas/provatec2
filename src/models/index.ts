@@ -10,7 +10,6 @@ const MilitarSchema = new Schema({
         type: Number,
         maxlenght: [3, "A idade pode ter no máximo 3 caracteres"],
         required: true,
-        unique: true,
         validate: {
             validator: function (value: number) {
                 if (typeof value !== 'number') {
@@ -109,7 +108,6 @@ const SoldadoSchema = new Schema({
 const PatenteSchema = new Schema({
     codigo: {
         type: Number,
-        maxlength: 2,
         required: true,
         unique: true,
         validate: {
@@ -117,12 +115,13 @@ const PatenteSchema = new Schema({
                 if (typeof value !== 'number') {
                     return false
                 }
-                if (value <= 20) {
+                if (value < 0) {
                     return false
                 }
-                if (value > 0) {
+                if (value >= 20) {
                     return false
                 }
+                
             }
         }
     },

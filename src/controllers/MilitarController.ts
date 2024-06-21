@@ -23,8 +23,6 @@ class MilitarController {
                 return res.json({ message: error.errors["nome"].message });
             } else if (error && error.errors["fone"]) {
                 return res.json({ message: error.errors["fone"].message });
-            }else if (error && error.errors["idade"]) {
-                return res.json({ message: error.errors["idade"].message });
             }
             return res.json({ message: error.message });
         }
